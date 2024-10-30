@@ -30,10 +30,10 @@ create_card_function <- function(year = get_current_season(),
     pull(home_team)
   
   
-  source("Game Background.R")
-  source("Game Overview.R")
-  source("Game Stats.R")
-  source("Assemble Card.R")
+  source("R/Game Background.R")
+  source("R/Game Overview.R")
+  source("R/Game Stats.R")
+  source("R/Assemble Card.R")
   
   for(i in home_teams){
     background_function(f_sched = sched, f_year = year, f_week = week, f_team = i)
