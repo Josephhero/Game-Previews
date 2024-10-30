@@ -28,6 +28,7 @@ jobs:
             any::ggimage
             any::gt
             any::gtExtras
+            any::webshot
             any::cowplot
             any::ggforce
             any::EBImage
