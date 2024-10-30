@@ -24,7 +24,8 @@ create_card_function <- function(year = get_current_season(),
 
   this_week <- week
   
-  pbp <- load_pbp(seasons = year)
+  pbp <- load_pbp(seasons = year) |> 
+    filter(week <= this_week - 1)
   
   sched <- load_schedules(seasons = year)
   
