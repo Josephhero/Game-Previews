@@ -14,6 +14,7 @@ library(webshot2)
 library(cowplot)
 library(ggforce)
 library(EBImage)
+library(magick)
 
 # Data-----
 
