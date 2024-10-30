@@ -85,11 +85,11 @@ card_function <- function(f_sched = sched,
   img_path <- paste0(path, base_name, ".png")
   
   # Load the image
-  img <- image_read(img_path)
+  img <- magick::image_read(img_path)
   
   flattened_img <- magick::image_flatten(img)
   trimmed_img <- magick::image_trim(flattened_img, fuzz = 1)
   
-  image_write(trimmed_img, img_path)
+  magick::image_write(trimmed_img, img_path)
   
 }
