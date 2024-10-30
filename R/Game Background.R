@@ -99,7 +99,7 @@ background_function <- function(f_sched = sched,
   )
   
   ggsave(p, 
-         filename = paste0("./images/Background.png"), 
+         filename = paste0("../images/Background.png"), 
          height = 12, 
          width = 10)
   
