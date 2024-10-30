@@ -350,7 +350,7 @@ stats_function <- function(f_pbp = pbp,
   )
   
   gtsave(stats_tab, 
-         path = "../images", 
+         path = "images", 
          filename = paste0("Stats.png"), 
          expand = c(5, 10, 0, 10))
   
