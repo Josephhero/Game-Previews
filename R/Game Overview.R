@@ -37,6 +37,8 @@ overview_function <- function(f_sched = sched,
   espn_data1 <- read_csv(paste0(espn_data_gh_url, f_year, "_espn_game_data.csv"))
   
   espn_data2 <- espn_data1 |> 
+    # Make sure data never includes current weeks data. 
+    filter(week <= (f_week - 1)) |> 
     select(season, game_id, week, home_away, team_abbr, team_record, team_score, 
            turnovers, redzone_att, redzone_conv, penalties) |> 
     mutate(across(c(turnovers, penalties), ~replace_na(.x, 0)))
