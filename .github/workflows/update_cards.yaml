@@ -24,6 +24,7 @@ jobs:
             any::nflreadr
             any::nflplotR
             any::ggplot2
+            any::shadowtext
             any::ggimage
             any::gt
             any::gtExtras
