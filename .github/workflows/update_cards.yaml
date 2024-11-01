@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
 
       - name: Install packages
         uses: r-lib/actions/setup-r-dependencies@v2
@@ -36,7 +38,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v3
 
-      - name: Scrape Data
+      - name: Create Preview Cards
         run: Rscript -e 'source("R/Create Card.R")'
 
       - name: Commit results
