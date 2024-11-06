@@ -51,6 +51,3 @@ create_card_function <- function(year = get_current_season(),
   }
 }
 
-create_card_function()
-
-
