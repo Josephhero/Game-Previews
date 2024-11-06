@@ -15,17 +15,22 @@ library(cowplot)
 library(ggforce)
 library(EBImage)
 library(magick)
+library(sysfonts)
+library(showtext)
 
 # Data-----
+
+# schedule <- load_schedules(seasons = 2024) 
 
 create_card_function <- function(year = get_current_season(), 
                                  week = get_current_week()
 ){
-
+  # year <- 2024
   this_week <- week
+  # team <- "KC"
   
   pbp <- load_pbp(seasons = year) |> 
-    filter(week <= (this_week - 1))
+    filter(week <= this_week - 1)
   
   sched <- load_schedules(seasons = year)
   
@@ -33,11 +38,10 @@ create_card_function <- function(year = get_current_season(),
     filter(week == this_week) |> 
     pull(home_team)
   
-  
-  source("R/Game Background.R")
-  source("R/Game Overview.R")
-  source("R/Game Stats.R")
-  source("R/Assemble Card.R")
+  source("Game Background.R")
+  source("Game Overview.R")
+  source("Game Stats.R")
+  source("Assemble Card.R")
   
   for(i in home_teams){
     background_function(f_sched = sched, f_year = year, f_week = week, f_team = i)
