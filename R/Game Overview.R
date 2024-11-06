@@ -5,18 +5,12 @@
 
 # Data-----
 
-# f_year <- get_current_season()
-# f_week <- get_current_week()
-# f_team <- "KC"
-# 
-# f_sched <- load_f_schedules(seasons = f_year)
 overview_function <- function(f_sched = sched, 
                               f_year = get_current_season(), 
                               f_week = get_current_week(use_date = TRUE), 
                               f_team = "KC"){
   
-  game_selected <- f_sched |> 
-    filter(week == f_week, home_team == f_team | away_team == f_team)
+  game_selected <- filter(f_sched, week == f_week, home_team == f_team | away_team == f_team)
   
   game_id_selected <- game_selected$game_id[1]
   
@@ -37,8 +31,6 @@ overview_function <- function(f_sched = sched,
   espn_data1 <- read_csv(paste0(espn_data_gh_url, f_year, "_espn_game_data.csv"))
   
   espn_data2 <- espn_data1 |> 
-    # Make sure data never includes current weeks data. 
-    filter(week <= (f_week - 1)) |> 
     select(season, game_id, week, home_away, team_abbr, team_record, team_score, 
            turnovers, redzone_att, redzone_conv, penalties) |> 
     mutate(across(c(turnovers, penalties), ~replace_na(.x, 0)))
@@ -85,6 +77,7 @@ overview_function <- function(f_sched = sched,
     mutate(ppg = ppg) |> 
     mutate(redzone_td_rate = redzone_td_rate * 100) |> 
     mutate(location = case_when(
+      game_selected$location[1] == "Neutral" ~ "Neutral", 
       location == "home" ~ "Home", 
       location == "away" ~ "Away", 
       location == "neutral" ~ "Neutral", 
@@ -175,7 +168,7 @@ overview_function <- function(f_sched = sched,
   )
   
   gtsave(overview_tab, 
-         path = "images", 
+         path = "./images", 
          filename = paste0("Overview.png"), 
          expand = c(5, 10, 5, 10)
   )
