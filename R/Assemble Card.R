@@ -15,7 +15,7 @@ card_function <- function(f_sched = sched,
   home_team <- game_data$home_team[1]
   away_team <- game_data$away_team[1]
   
-  path <- "images/"
+  path <- "./images/"
   base_name <- paste0(f_year, " Week ", f_week, " ", away_team, " at ", home_team)
   
   background_img <- EBImage::readImage(paste0(path, "Background.png"))
@@ -37,7 +37,7 @@ card_function <- function(f_sched = sched,
                         vjust = 0.5,) + 
     cowplot::draw_image(stats_img, 
                         x = 5, 
-                        y = 3.83,  
+                        y = 3.89,  
                         height = 6.57,
                         width = 6.37, 
                         hjust = 0.5, 
@@ -62,7 +62,7 @@ card_function <- function(f_sched = sched,
     ggforce::geom_shape(
       data = data.frame(
         x = c(1.8, 8.2, 8.2, 1.8),
-        y = c(6.83, 6.83, 0.82, 0.82)), 
+        y = c(6.76, 6.76, 1.02, 1.02)), 
       mapping = aes(
         x = x, y = y
       ),
@@ -85,11 +85,11 @@ card_function <- function(f_sched = sched,
   img_path <- paste0(path, base_name, ".png")
   
   # Load the image
-  img <- magick::image_read(img_path)
+  img <- image_read(img_path)
   
   flattened_img <- magick::image_flatten(img)
   trimmed_img <- magick::image_trim(flattened_img, fuzz = 1)
   
-  magick::image_write(trimmed_img, img_path)
+  image_write(trimmed_img, img_path)
   
 }
