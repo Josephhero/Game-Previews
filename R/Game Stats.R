@@ -5,9 +5,9 @@
 
 # Data-----
 
-f_year <- get_current_season()
-f_week <- get_current_week()
-f_team <- "KC"
+# f_year <- get_current_season()
+# f_week <- get_current_week()
+# f_team <- "KC"
 
 # pbp <- load_pbp(seasons = f_year)
 
@@ -19,7 +19,6 @@ stats_function <- function(f_pbp = pbp,
   
   game_data <- f_sched |>
     filter(week == f_week, home_team == f_team | away_team == f_team)
- 
   
   pbp <- f_pbp
   scr <- calculate_series_conversion_rates(pbp = pbp)
@@ -121,18 +120,18 @@ stats_function <- function(f_pbp = pbp,
     mutate(off_rank = dense_rank(desc(off_stat)), .by = type) |> 
     mutate(def_rank = dense_rank(def_stat), .by = type) |> 
     mutate(off_stat_text = case_when(
-      str_ends(type, "_epa") ~ paste0(round(off_stat, digits = 3), " (", off_rank, ")"), 
-      str_ends(type, "_success") ~ paste0(round(off_stat * 100, digits = 1), "% (", off_rank, ")"),  
-      str_ends(type, "_rate") ~ paste0(round(off_stat * 100, digits = 1), "% (", off_rank, ")"), 
-      str_ends(type, "proe") ~ paste0(round(off_stat * 100, digits = 1), "% (", off_rank, ")"),
-      TRUE ~ paste0(off_stat, " (", off_rank, ")")
+      str_ends(type, "_epa") ~ paste0(format(round(off_stat, digits = 3), nsmall = 3)), 
+      str_ends(type, "_success") ~ paste0(format(round(off_stat * 100, digits = 1), nsmall = 1), "%"),  
+      str_ends(type, "_rate") ~ paste0(format(round(off_stat * 100, digits = 1), nsmall = 1), "%"), 
+      str_ends(type, "proe") ~ paste0(format(round(off_stat * 100, digits = 1), nsmall = 1), "%"),
+      TRUE ~ paste0(off_stat)
     )) |> 
     mutate(def_stat_text = case_when(
-      str_ends(type, "_epa") ~ paste0(round(def_stat, digits = 3), " (", def_rank, ")"), 
-      str_ends(type, "_success") ~ paste0(round(def_stat * 100, digits = 1), "% (", def_rank, ")"),  
-      str_ends(type, "_rate") ~ paste0(round(def_stat * 100, digits = 1), "% (", def_rank, ")"), 
-      str_ends(type, "proe") ~ paste0(round(def_stat * 100, digits = 1), "% (", def_rank, ")"),
-      TRUE ~ paste0(def_stat, " (", def_rank, ")")
+      str_ends(type, "_epa") ~ paste0(format(round(def_stat, digits = 3), nsmall = 3)), 
+      str_ends(type, "_success") ~ paste0(format(round(def_stat * 100, digits = 1), nsmall = 1), "%"),  
+      str_ends(type, "_rate") ~ paste0(format(round(def_stat * 100, digits = 1), nsmall = 1), "%"), 
+      str_ends(type, "proe") ~ paste0(format(round(def_stat * 100, digits = 1), nsmall = 1), "%"),
+      TRUE ~ paste0(def_stat)
     ))
   
   sched <- load_schedules(seasons = f_year)
@@ -184,8 +183,8 @@ stats_function <- function(f_pbp = pbp,
     ), .after = type) |> 
     mutate(sort_order = match(type, stat_type_list), .after = type_text) |> 
     replace_na(list(sort_order = 99)) |> 
-    select(away_off_rank, away_def_rank, away_off, away_def, type_text, 
-           sort_order, home_def, home_off, home_off_rank, home_def_rank) |> 
+    select(away_off, away_off_rank, away_def, away_def_rank, type_text, 
+           sort_order, home_def, home_def_rank, home_off, home_off_rank) |> 
     arrange(sort_order)
   
   stats_preview <- all_stats |> 
@@ -205,9 +204,13 @@ stats_function <- function(f_pbp = pbp,
                  home_def = "def", 
                  type_text = "", 
                  away_def = "def", 
-                 away_off = "off"
+                 away_off = "off", 
+                 home_off_rank = "rk", 
+                 home_def_rank = "rk", 
+                 away_off_rank = "rk", 
+                 away_def_rank = "rk", 
       ) |> 
-      cols_hide(c(sort_order, ends_with("_rank"))) |> 
+      cols_hide(c(sort_order)) |> 
       sub_missing(missing_text = "") |> 
       tab_spanner(columns = starts_with("home_"), 
                   label = home_team) |> 
@@ -265,25 +268,25 @@ stats_function <- function(f_pbp = pbp,
         )
       ) |>
       tab_style(
-        style = cell_text(align = "center", 
+        style = cell_text(align = "right", 
                           font = google_font("Barlow Condensed"),
                           size = px(18)),
-        locations = cells_body(everything())
+        locations = cells_body(c(everything(), -type_text))
       ) |>
       data_color(columns = away_off_rank, 
-                 target_columns = away_off, 
+                 target_columns = c(away_off, away_off_rank), 
                  palette = rev(hulk_pal), 
                  domain = 1:32) |> 
       data_color(columns = away_def_rank, 
-                 target_columns = away_def, 
+                 target_columns = c(away_def, away_def_rank), 
                  palette = rev(hulk_pal), 
                  domain = 1:32) |> 
       data_color(columns = home_off_rank, 
-                 target_columns = home_off, 
+                 target_columns = c(home_off, home_off_rank), 
                  palette = rev(hulk_pal), 
                  domain = 1:32) |> 
       data_color(columns = home_def_rank, 
-                 target_columns = home_def, 
+                 target_columns = c(home_def, home_def_rank), 
                  palette = rev(hulk_pal), 
                  domain = 1:32) |> 
       # Add border lines around column
@@ -308,9 +311,6 @@ stats_function <- function(f_pbp = pbp,
           rows = type_text == "Series Conversion Rate"
         )
       ) |>
-      tab_footnote(
-        footnote = md("**Note:** NFL rank shown in parentheses (x).")
-      ) |> 
       tab_style(
         style = list(
           cell_text(style = "italic", 
@@ -350,9 +350,8 @@ stats_function <- function(f_pbp = pbp,
   )
   
   gtsave(stats_tab, 
-         path = "images", 
+         path = "./images", 
          filename = paste0("Stats.png"), 
          expand = c(5, 10, 0, 10))
   
 }
-
