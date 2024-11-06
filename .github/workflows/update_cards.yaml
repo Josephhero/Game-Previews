@@ -34,6 +34,8 @@ jobs:
             any::cowplot
             any::ggforce
             any::EBImage
+            any::sysfonts
+            any::showtext
             
       - name: Check out repository
         uses: actions/checkout@v3
