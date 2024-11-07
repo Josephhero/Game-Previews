@@ -184,8 +184,8 @@ stats_function <- function(f_pbp = pbp,
     ), .after = type) |> 
     mutate(sort_order = match(type, stat_type_list), .after = type_text) |> 
     replace_na(list(sort_order = 99)) |> 
-    select(away_off_rank, away_def_rank, away_off, away_def, type_text, 
-           sort_order, home_def, home_off, home_off_rank, home_def_rank) |> 
+    select(away_off, away_off_rank, away_def, away_def_rank, type_text, 
+           sort_order, home_def, home_def_rank, home_off, home_off_rank) |> 
     arrange(sort_order)
   
   stats_preview <- all_stats |> 
