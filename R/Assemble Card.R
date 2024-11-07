@@ -15,7 +15,7 @@ card_function <- function(f_sched = sched,
   home_team <- game_data$home_team[1]
   away_team <- game_data$away_team[1]
   
-  path <- "./images/"
+  path <- "images/"
   base_name <- paste0(f_year, " Week ", f_week, " ", away_team, " at ", home_team)
   
   background_img <- EBImage::readImage(paste0(path, "Background.png"))
