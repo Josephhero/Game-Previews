@@ -50,5 +50,5 @@ create_card_function <- function(year = get_current_season(),
     card_function(f_sched = sched, f_year = year, f_week = week, f_team = i)
   }
 }
-
+}
 create_card_function()
