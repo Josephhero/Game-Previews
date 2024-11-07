@@ -23,7 +23,10 @@ library(showtext)
 create_card_function <- function(year = get_current_season(), 
                                  week = get_current_week()
 ){
+  weeks <- c(6:10)
 
+  for(i in weeks){
+    week <- i
   this_week <- week
   
   pbp <- load_pbp(seasons = year) |> 
