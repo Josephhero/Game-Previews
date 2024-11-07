@@ -23,7 +23,7 @@ library(showtext)
 # schedule <- load_schedules(seasons = 2024) 
 
 create_card_function <- function(year = get_current_season(), 
-                                 week = get_current_week()
+                                 week = get_current_week() + 1
 ){
   # year <- 2024
   this_week <- week
