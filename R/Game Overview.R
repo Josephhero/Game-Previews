@@ -168,7 +168,7 @@ overview_function <- function(f_sched = sched,
   )
   
   gtsave(overview_tab, 
-         path = "./images", 
+         path = "images", 
          filename = paste0("Overview.png"), 
          expand = c(5, 10, 5, 10)
   )
