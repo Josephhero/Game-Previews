@@ -5,20 +5,21 @@
 
 # Data-----
 
-# f_year <- get_current_season()
-# f_week <- get_current_week()
-# f_team <- "KC"
+f_year <- get_current_season()
+f_week <- get_current_week()
+f_team <- "KC"
 
 # pbp <- load_pbp(seasons = f_year)
 
 stats_function <- function(f_pbp = pbp, 
                            f_sched = sched, 
                            f_year = get_current_season(), 
-                           f_week = get_current_week(use_date = TRUE), 
+                           f_week = get_current_week(), 
                            f_team = "KC"){
   
   game_data <- f_sched |>
     filter(week == f_week, home_team == f_team | away_team == f_team)
+ 
   
   pbp <- f_pbp
   scr <- calculate_series_conversion_rates(pbp = pbp)
@@ -183,8 +184,8 @@ stats_function <- function(f_pbp = pbp,
     ), .after = type) |> 
     mutate(sort_order = match(type, stat_type_list), .after = type_text) |> 
     replace_na(list(sort_order = 99)) |> 
-    select(away_off, away_off_rank, away_def, away_def_rank, type_text, 
-           sort_order, home_def, home_def_rank, home_off, home_off_rank) |> 
+    select(away_off_rank, away_def_rank, away_off, away_def, type_text, 
+           sort_order, home_def, home_off, home_off_rank, home_def_rank) |> 
     arrange(sort_order)
   
   stats_preview <- all_stats |> 
