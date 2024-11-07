@@ -48,7 +48,7 @@ card_function <- function(f_sched = sched,
     ggforce::geom_shape(
       data = data.frame(
         x = c(0.97, 9.03, 9.03, 0.97),
-        y = c(8.85, 8.85, 7.19, 7.19)), 
+        y = c(8.85, 8.85, 7.18, 7.18)), 
       mapping = aes(
         x = x, y = y
       ),
@@ -62,7 +62,7 @@ card_function <- function(f_sched = sched,
     ggforce::geom_shape(
       data = data.frame(
         x = c(1.8, 8.2, 8.2, 1.8),
-        y = c(6.76, 6.76, 1.02, 1.02)), 
+        y = c(6.74, 6.74, 1.04, 1.04)), 
       mapping = aes(
         x = x, y = y
       ),
