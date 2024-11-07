@@ -60,9 +60,15 @@ card_function <- function(f_sched = sched,
       linewidth = 3
     ) + 
     ggforce::geom_shape(
-      data = data.frame(
-        x = c(1.8, 8.2, 8.2, 1.8),
-        y = c(6.74, 6.74, 1.04, 1.04)), 
+      if(home_team == "MIA" | away_team == "MIA"){
+        data = data.frame(
+          x = c(1.8, 8.2, 8.2, 1.8),
+          y = c(6.72, 6.72, 1.06, 1.06))
+      } else{
+        data = data.frame(
+          x = c(1.8, 8.2, 8.2, 1.8),
+          y = c(6.74, 6.74, 1.04, 1.04))
+      }, 
       mapping = aes(
         x = x, y = y
       ),
