@@ -1,7 +1,6 @@
 # library(tidyverse)
 # library(nflverse)
 # library(ggplot2)
-# library(shadowtext)
 
 
 # f_year <- get_current_season()
@@ -14,7 +13,8 @@ background_function <- function(f_sched = sched,
                                 f_year = get_current_season(), 
                                 f_week = get_current_week(use_date = TRUE), 
                                 f_team = "KC"){
-  game_data <- f_sched |> 
+  
+   game_data <- f_sched |> 
     filter(week == f_week, home_team == f_team | away_team == f_team) |> 
     left_join(select(load_teams(), team_abbr, home_team_color = team_color), 
               by = c("home_team" = "team_abbr")) |> 
@@ -22,7 +22,7 @@ background_function <- function(f_sched = sched,
               by = c("away_team" = "team_abbr")) |> 
     mutate(gametime_format = str_squish(
       sub("^0", "", format(as.POSIXct(paste0(gameday, " ", gametime)), "%a, %b %e %l:%M %p"), '%r')
-      ), .after = gametime) |> 
+    ), .after = gametime) |> 
     left_join(select(
       read_csv("https://raw.githubusercontent.com/Josephhero/NFL-Stadiums/refs/heads/main/nfl_stadiums_2024.csv"), 
       team_abbr, stadium_id, city, state_abbr, country), 
@@ -42,12 +42,13 @@ background_function <- function(f_sched = sched,
   away_helmet_url <- paste0(gh_url, away_team, "_right.png")
   
   # Code for the background image
+  
   # Add Google Font (replace "Roboto" with your desired font)
   sysfonts::font_add_google(name = "Barlow Condensed", family = "barlow_condensed")
-  # sysfonts::font_add_google(name = "Barlow", family = "barlow_condensed")
-  
+
   # Enable showtext to render the text properly
   showtext::showtext_auto()
+  
   # Create a sample dataset
   df <- data.frame(
     x = 0:10,
