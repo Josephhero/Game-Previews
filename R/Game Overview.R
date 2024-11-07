@@ -5,12 +5,18 @@
 
 # Data-----
 
+# f_year <- get_current_season()
+# f_week <- get_current_week()
+# f_team <- "KC"
+# 
+# f_sched <- load_f_schedules(seasons = f_year)
 overview_function <- function(f_sched = sched, 
                               f_year = get_current_season(), 
                               f_week = get_current_week(use_date = TRUE), 
                               f_team = "KC"){
   
-  game_selected <- filter(f_sched, week == f_week, home_team == f_team | away_team == f_team)
+  game_selected <- f_sched |> 
+    filter(week == f_week, home_team == f_team | away_team == f_team)
   
   game_id_selected <- game_selected$game_id[1]
   
@@ -31,6 +37,8 @@ overview_function <- function(f_sched = sched,
   espn_data1 <- read_csv(paste0(espn_data_gh_url, f_year, "_espn_game_data.csv"))
   
   espn_data2 <- espn_data1 |> 
+    # Make sure data never includes current weeks data. 
+    filter(week <= (f_week - 1)) |> 
     select(season, game_id, week, home_away, team_abbr, team_record, team_score, 
            turnovers, redzone_att, redzone_conv, penalties) |> 
     mutate(across(c(turnovers, penalties), ~replace_na(.x, 0)))
@@ -70,7 +78,7 @@ overview_function <- function(f_sched = sched,
     mutate(redzone_td_rate = redzone_conversions / redzone_attempts) |> 
     mutate(penalties_per_game = penalties / games) 
   
-  espn_data_table <- game_data |> 
+espn_data_table <- game_data |> 
     filter(game_id == game_id_selected) |> 
     left_join(espn_data, by = c("team" = "team_abbr")) |> 
     mutate(wp = wp * 100) |>
@@ -174,4 +182,3 @@ overview_function <- function(f_sched = sched,
   )
   
 }
-
