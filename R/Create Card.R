@@ -23,10 +23,13 @@ library(showtext)
 create_card_function <- function(year = get_current_season(), 
                                  week = get_current_week()
 ){
-  weeks <- c(6:10)
+ 
+  # Use this if you need to run for multiple weeks
+  # weeks <- c(6:10)
 
-  for(i in weeks){
-    week <- i
+  # for(i in weeks){
+  #  week <- i
+  
   this_week <- week
   
   pbp <- load_pbp(seasons = year) |> 
@@ -49,6 +52,6 @@ create_card_function <- function(year = get_current_season(),
     stats_function(f_pbp = pbp, f_sched = sched, f_year = year, f_week = week, f_team = i)
     card_function(f_sched = sched, f_year = year, f_week = week, f_team = i)
   }
-}
+# }
 }
 create_card_function()
