@@ -20,17 +20,14 @@ library(showtext)
 
 # Data-----
 
-# schedule <- load_schedules(seasons = 2024) 
-
 create_card_function <- function(year = get_current_season(), 
                                  week = get_current_week()
 ){
-  # year <- 2024
+
   this_week <- week
-  # team <- "KC"
   
   pbp <- load_pbp(seasons = year) |> 
-    filter(week <= this_week - 1)
+    filter(week <= (this_week - 1))
   
   sched <- load_schedules(seasons = year)
   
@@ -51,3 +48,4 @@ create_card_function <- function(year = get_current_season(),
   }
 }
 
+create_card_function()
