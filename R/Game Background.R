@@ -21,19 +21,30 @@ stadiums <- select(
 
   game_data <- f_sched |> 
     filter(week == f_week, home_team == f_team | away_team == f_team) |> 
-    left_join(select(load_teams(), team_abbr, home_team_color = team_color), 
+    left_join(select(load_teams(), team_abbr, home_team_color = team_color, home_team_conf = team_conf), 
               by = c("home_team" = "team_abbr")) |> 
     left_join(select(load_teams(), team_abbr, away_team_color = team_color), 
               by = c("away_team" = "team_abbr")) |> 
     mutate(gametime_format = str_squish(
       sub("^0", "", format(as.POSIXct(paste0(gameday, " ", gametime)), "%a, %b %e %l:%M %p"), '%r')
-      ), .after = gametime) |> 
-    left_join(stadiums, by = "stadium_id") |> 
+    ), .after = gametime) |> 
+    left_join(select(
+      read_csv("https://raw.githubusercontent.com/Josephhero/NFL-Stadiums/refs/heads/main/nfl_stadiums_2024.csv"), 
+      team_abbr, stadium_id, city, state_abbr, country), 
+      by = c("home_team" = "team_abbr", "stadium_id")) |> 
     mutate(gametime_label = case_when(
       location == "Neutral" & country == "America" ~ paste0(gametime_format, " EST in ", city, ", ", state_abbr), 
       location == "Neutral" & country != "America" ~ paste0(gametime_format, " EST in ", city, ", ", country), 
       TRUE ~ paste0(gametime_format, " EST")
-    ))
+    )) |> 
+    mutate(week_label = case_when(
+      week == 19 ~ "Wildcard Weekend", 
+      week == 20 ~ "Divisional Round", 
+      week == 21 ~ paste0(home_team_conf, " CG"), 
+      week == 22 ~ "Super Bowl", 
+      TRUE ~ paste0("Week ", week)
+    )) |> 
+    select(-home_team_conf)
   
   gh_url <- "https://raw.githubusercontent.com/Josephhero/NFL-Helmets/main/Helmet%20Images/"
   home_team <- game_data$home_team[1]
@@ -123,7 +134,7 @@ stadiums <- select(
                    data.frame(
                      x = 5, 
                      y = 8.95), 
-                 aes(label = paste0("Week ", f_week)), 
+                 aes(label = game_data$week_label), 
                  size = 35, 
                  color = "#daa520", 
                  fill = "gray10",
