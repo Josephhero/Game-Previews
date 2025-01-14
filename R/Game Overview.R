@@ -129,15 +129,19 @@ espn_data_table <- game_data |>
                                (max(espn_data$ppg, na.rm = TRUE) + 0.1)), 
                              accuracy = 0.1
       ) |> 
-      gtExtras::gt_color_box(columns = point_diff, 
+       gtExtras::gt_color_box(columns = point_diff, 
                              domain = range(
                                min(espn_data$point_diff, na.rm = TRUE), 
-                               max(espn_data$point_diff, na.rm = TRUE))
+                               max(espn_data$point_diff, na.rm = TRUE)), 
+                             style_positive = "plus", 
+                             style_negative = "minus"
       ) |> 
       gtExtras::gt_color_box(columns = net_turnovers, 
                              domain = range(
                                min(espn_data$net_turnovers, na.rm = TRUE), 
-                               max(espn_data$net_turnovers, na.rm = TRUE))
+                               max(espn_data$net_turnovers, na.rm = TRUE)), 
+                             style_positive = "plus", 
+                             style_negative = "minus"
       ) |> 
       gtExtras::gt_color_box(columns = redzone_td_rate, 
                              domain = range(
