@@ -40,7 +40,7 @@ stadiums <- select(
     mutate(week_label = case_when(
       week == 19 ~ "Wildcard Weekend", 
       week == 20 ~ "Divisional Round", 
-      week == 21 ~ paste0(home_team_conf, " CG"), 
+      week == 21 ~ paste0(home_team_conf, " Championship"), 
       week == 22 ~ "Super Bowl", 
       TRUE ~ paste0("Week ", week)
     )) |> 
