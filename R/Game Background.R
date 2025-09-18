@@ -25,8 +25,14 @@ stadiums <- select(
               by = c("home_team" = "team_abbr")) |> 
     left_join(select(load_teams(), team_abbr, away_team_color = team_color), 
               by = c("away_team" = "team_abbr")) |> 
-    mutate(gametime_format = str_squish(
-      sub("^0", "", format(as.POSIXct(paste0(gameday, " ", gametime)), "%a, %b %e %l:%M %p"), '%r')
+    # mutate(gametime_format = str_squish(
+    #   sub("^0", "", format(as.POSIXct(paste0(gameday, " ", gametime)), "%a, %b %e %l:%M %p"), '%r')
+    # ), .after = gametime) |> 
+    mutate(gametime_format = case_when(
+      is.na(gameday) | is.na(gametime) ~ NA_character_,
+      TRUE ~ str_squish(
+        sub("^0", "", format(as.POSIXct(paste0(gameday, " ", gametime)), "%a, %b %e %l:%M %p"))
+      )
     ), .after = gametime) |> 
     left_join(select(
       read_csv("https://raw.githubusercontent.com/Josephhero/NFL-Stadiums/refs/heads/main/nfl_stadiums_2024.csv"), 
