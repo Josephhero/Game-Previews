@@ -132,7 +132,7 @@ stadiums <- select(
                  fill = "gray10",
                  fontface = "bold", 
                  family = "barlow_condensed",
-                 label.size = 1.6, 
+                 linewidth = 1.6, 
                  label.padding = unit(0.08, "lines"), 
                  label.r = unit(0.05, "lines")
       ) + 
@@ -146,7 +146,7 @@ stadiums <- select(
                  fill = "gray10",
                  fontface = "bold", 
                  family = "barlow_condensed",
-                 label.size = 1.6, 
+                 linewidth = 1.6, 
                  label.padding = unit(0.08, "lines"), 
                  label.r = unit(0.05, "lines")
       ) + 
