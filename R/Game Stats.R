@@ -108,11 +108,6 @@ stats_function <- function(f_pbp = pbp,
                  values_to = "def_stat") |> 
     select(-plays)
   
-  def_to <- load_player_stats(stat_type = "defense") |> 
-    mutate(turnover = def_interceptions + def_fumble_recovery_opp) |> 
-    summarize(turnovers = sum(turnover, na.rm = TRUE), 
-              .by = team)
-  
   def_stats <- bind_rows(def_stats_pivot, def_scr) |> 
     arrange(team_abbr)
   
